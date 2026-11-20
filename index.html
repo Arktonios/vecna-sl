@@ -140,7 +140,7 @@ button:disabled{opacity:.45}
 <nav id="nav"></nav>
 <div id="ov"></div>
 
-<script id="payload" type="application/json">{"salt": "/hQi/OMfVjhU/utP3pE2fg==", "iv": "sE7h7+Q+Rm4rnUBP", "iter": 250000, "ext": ["data1.bin", "data2.bin"], "v": "8e0b5b5414"}</script>
+<script id="payload" type="application/json">{"salt": "fOJ8Dr8sAgyEc/yCeeHGcw==", "iv": "54mtrJyCiHFoxeKx", "iter": 250000, "ext": ["data1.bin", "data2.bin"], "v": "47e7571c9c"}</script>
 <script>
 "use strict";
 const $=s=>document.querySelector(s);
@@ -150,7 +150,7 @@ function b64(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.lengt
 async function decrypt(pw){
   const P=JSON.parse($("#payload").textContent);
   let CT;
-  if(P.ext){if(!decrypt.buf){const L=Array.isArray(P.ext)?P.ext:[P.ext];const bufs=await Promise.all(L.map(async f=>{const r=await fetch(f+"?v="+P.v);if(!r.ok)throw new Error("nofile");return new Uint8Array(await r.arrayBuffer())}));const n=bufs.reduce((s,x)=>s+x.length,0);const all=new Uint8Array(n);let o=0;for(const x of bufs){all.set(x,o);o+=x.length}decrypt.buf=all}CT=decrypt.buf}else CT=b64(P.ct);
+  if(P.ext){if(!decrypt.buf){const L=Array.isArray(P.ext)?P.ext:[P.ext];const bufs=await Promise.all(L.map(async f=>{const r=await fetch(f+"?v="+P.v);if(!r.ok)throw new Error("nofile");return new Uint8Array(await r.arrayBuffer())}));const n=bufs.reduce((s,x)=>s+x.length,0);const all=new Uint8Array(n);let o=0;for(const x of bufs){all.set(x,o);o+=x.length}if(P.v){const h=[...new Uint8Array(await crypto.subtle.digest("SHA-1",all))].map(x=>x.toString(16).padStart(2,"0")).join("").slice(0,P.v.length);if(h!==P.v)throw new Error("mismatch")}decrypt.buf=all}CT=decrypt.buf}else CT=b64(P.ct);
   const km=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
   const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(P.salt),iterations:P.iter,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["decrypt"]);
   const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(P.iv)},key,CT);
@@ -171,6 +171,7 @@ function pwDel(){lsDel(PKEY);ckDel(PKEY)}
 async function tryUnlock(pw,remember,auto){
   $("#err").textContent=auto?"Lade …":"";
   try{D=await decrypt(pw)}catch(e){
+    if(e&&e.message==="mismatch"){$("#err").textContent="Die Datendateien passen nicht zu dieser index.html (andere Version). index.html, data1 und data2 immer zusammen hochladen.";decrypt.buf=null;return}
     if(e&&e.message==="nofile"){$("#err").textContent="Datendateien (data1.bin, data2.bin …) fehlen neben index.html.";return}
     if(!(e&&e.name==="OperationError")){$("#err").textContent="Laden fehlgeschlagen (Netz?). Gespeichertes Passwort bleibt erhalten – bitte nochmal „Öffnen“ tippen.";if(auto)$("#pw").value=pw;decrypt.buf=null;return}
     $("#err").textContent="Falsches Passwort.";pwDel();return}
