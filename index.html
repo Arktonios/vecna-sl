@@ -21,7 +21,7 @@ header{position:sticky;top:0;z-index:20;background:var(--head);color:#fff;border
 header h1{cursor:pointer;font-size:19px;font-weight:500;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
 header button{background:#ffffff1a;border-color:#ffffff40;color:#fff}
 main{padding:12px 12px calc(110px + env(safe-area-inset-bottom))}
-nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;background:var(--head);border-top:0;padding-bottom:max(env(safe-area-inset-bottom),18px)}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;background:var(--head);border-top:0;padding-bottom:max(env(safe-area-inset-bottom),24px)}
 nav button{flex:1;border:0;border-radius:0;background:none;padding:9px 2px 7px;font-size:11px;color:#a9bcc7;display:flex;flex-direction:column;align-items:center;gap:2px}
 nav button .i{font-size:20px;line-height:1}
 nav button.on{color:#fff;font-weight:700;background:#ffffff14}
@@ -42,7 +42,7 @@ nav button.on{color:#fff;font-weight:700;background:#ffffff14}
 .mk{position:absolute;transform:translate(-50%,-50%);min-width:26px;height:26px;padding:0 4px;border-radius:13px;background:rgba(232,190,100,.95);color:#1a1408;font-family:-apple-system,sans-serif;font-weight:700;font-size:11px;border:2px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px #000a}
 .mk.done{background:rgba(110,110,110,.85);color:#eee}
 .mk.cur{background:var(--red);color:#fff}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;max-height:86vh;max-height:82dvh;overflow:auto;background:var(--bg);border-top:2px solid var(--acc);border-radius:18px 18px 0 0;padding:14px 14px calc(40px + max(env(safe-area-inset-bottom),18px));box-shadow:0 -10px 30px #0004;animation:up .18s ease-out}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;max-height:86vh;max-height:82dvh;overflow:auto;background:var(--bg);border-top:2px solid var(--acc);border-radius:18px 18px 0 0;padding:14px 14px calc(40px + max(env(safe-area-inset-bottom),24px));box-shadow:0 -10px 30px #0004;animation:up .18s ease-out}
 @keyframes up{from{transform:translateY(40px);opacity:.4}}
 .sheet h2{margin:0 0 4px;font-size:19px}
 .shade{position:fixed;inset:0;background:#1e374580;z-index:45}
@@ -85,7 +85,7 @@ nav button.on{color:#fff;font-weight:700;background:#ffffff14}
 .move{background:#e3ecf3;border-left:4px solid var(--blu);padding:8px 12px;border-radius:8px;margin:8px 0}
 .pic{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center}.pic img{max-width:100%;max-height:100%;object-fit:contain}
 .pb{background:#e9e2f3;border-color:#8a74b0}
-.full{position:fixed;inset:0;height:100dvh;z-index:60;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch;padding:calc(env(safe-area-inset-top) + 10px) 12px calc(60px + max(env(safe-area-inset-bottom),18px))}
+.full{position:fixed;inset:0;height:100dvh;z-index:60;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch;padding:calc(env(safe-area-inset-top) + 10px) 12px calc(60px + max(env(safe-area-inset-bottom),24px))}
 .grp>summary{font-size:20px;color:var(--acc)}
 .sub{border-top:1px solid var(--line);padding-top:4px}
 .sub>summary{font-weight:600}
@@ -111,6 +111,14 @@ details summary{cursor:pointer;font-weight:600;padding:6px 0}
 .kq{background:var(--head);color:#fff;border-radius:12px 12px 2px 12px;padding:8px 12px;margin:10px 0 6px auto;max-width:88%;width:fit-content;font-size:15px}
 .ka{background:#fff;border:1px solid var(--line);border-radius:12px 12px 12px 2px;padding:6px 12px;margin:6px 0}
 #kout:empty{display:none}
+
+.swrap{position:relative;margin-bottom:6px;border-radius:10px;overflow:hidden}
+.swrap .cmb{margin:0;position:relative;z-index:1;transition:transform .2s ease;touch-action:pan-y}
+.swdel{position:absolute;right:0;top:0;bottom:0;width:110px;border:0;border-radius:10px;background:var(--red);color:#fff;font-weight:700;font-size:16px}
+.dlgbg{position:fixed;inset:0;z-index:400;background:#1e374580;display:flex;align-items:center;justify-content:center;padding:20px}
+.dlg{background:var(--bg);border-radius:14px;padding:18px;width:100%;max-width:400px;box-shadow:0 10px 30px #0005}
+button.danger{background:var(--red);color:#fff;border-color:var(--red);font-weight:600}
+button:disabled{opacity:.45}
 </style>
 </head>
 <body>
@@ -128,7 +136,7 @@ details summary{cursor:pointer;font-weight:600;padding:6px 0}
 <nav id="nav"></nav>
 <div id="ov"></div>
 
-<script id="payload" type="application/json">{"salt": "VyW5NKOIofE2q4vP0Eegkw==", "iv": "645EzW7LahtOWfi5", "iter": 250000, "ext": "data.bin", "v": "06148e8ecc"}</script>
+<script id="payload" type="application/json">{"salt": "KBvVIdxjpZUZTbFVx6d/aw==", "iv": "ZZKvNi5Yw73CfbBm", "iter": 250000, "ext": ["data1.bin", "data2.bin"], "v": "34b3699c26"}</script>
 <script>
 "use strict";
 const $=s=>document.querySelector(s);
@@ -138,7 +146,7 @@ function b64(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.lengt
 async function decrypt(pw){
   const P=JSON.parse($("#payload").textContent);
   let CT;
-  if(P.ext){if(!decrypt.buf){const r=await fetch(P.ext+"?v="+P.v);if(!r.ok)throw new Error("nofile");decrypt.buf=new Uint8Array(await r.arrayBuffer())}CT=decrypt.buf}else CT=b64(P.ct);
+  if(P.ext){if(!decrypt.buf){const L=Array.isArray(P.ext)?P.ext:[P.ext];const bufs=await Promise.all(L.map(async f=>{const r=await fetch(f+"?v="+P.v);if(!r.ok)throw new Error("nofile");return new Uint8Array(await r.arrayBuffer())}));const n=bufs.reduce((s,x)=>s+x.length,0);const all=new Uint8Array(n);let o=0;for(const x of bufs){all.set(x,o);o+=x.length}decrypt.buf=all}CT=decrypt.buf}else CT=b64(P.ct);
   const km=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
   const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(P.salt),iterations:P.iter,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["decrypt"]);
   const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(P.iv)},key,CT);
@@ -148,9 +156,9 @@ function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function lsDel(k){try{localStorage.removeItem(k)}catch(e){}}
 async function tryUnlock(pw,remember){
-  try{D=await decrypt(pw)}catch(e){if(e&&e.message==="nofile"){$("#err").textContent="Datei data.bin fehlt neben index.html.";return}$("#err").textContent="Falsches Passwort.";lsDel(PKEY);return}
+  try{D=await decrypt(pw)}catch(e){if(e&&e.message==="nofile"){$("#err").textContent="Datendateien (data1.bin, data2.bin …) fehlen neben index.html.";return}$("#err").textContent="Falsches Passwort.";lsDel(PKEY);return}
   if(remember)lsSet(PKEY,pw);
-  $("#lock").remove();init();
+  $("#lock").remove();init();try{LASTC=JSON.stringify(S.combat)}catch(e){}
 }
 $("#unlock").onclick=()=>tryUnlock($("#pw").value,$("#rem").checked);
 $("#pw").onkeydown=e=>{if(e.key==="Enter")$("#unlock").click()};
@@ -159,8 +167,20 @@ $("#pw").onkeydown=e=>{if(e.key==="Enter")$("#unlock").click()};
 function defState(){return{tab:"karte",chapter:D.chapters[0].id,map:D.chapters[0].maps[0].id,zoom:1,done:{},cur:null,
   secrets:Object.assign({},D.secretsInit),npc:{},loot:"",notes:"",log:[],combat:{list:[],turn:0,round:1}}}
 function load(){try{S=JSON.parse(lsGet(SKEY))}catch(e){}if(!S)S=defState();S=Object.assign(defState(),S)}
-function save(){lsSet(SKEY,JSON.stringify(S))}
-function toast(t){const d=document.createElement("div");d.className="toast";d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),1700)}
+function save(){try{trackCombat()}catch(e){}lsSet(SKEY,JSON.stringify(S))}
+function ask(text,ok="OK",danger=false){return new Promise(res=>{const d=document.createElement("div");d.className="dlgbg";
+  d.innerHTML=`<div class="dlg"><p style="white-space:pre-wrap;margin:0 0 14px">${esc(text)}</p><div class="row" style="justify-content:flex-end;gap:8px"><button id="dno">Abbrechen</button><button class="${danger?"danger":"pri"}" id="dok">${esc(ok)}</button></div></div>`;
+  document.body.appendChild(d);const done=v=>{d.remove();res(v)};d.querySelector("#dno").onclick=()=>done(false);d.querySelector("#dok").onclick=()=>done(true);d.onclick=e=>{if(e.target===d)done(false)}})}
+function askText(label,val="",multi=false){return new Promise(res=>{const d=document.createElement("div");d.className="dlgbg";
+  d.innerHTML=`<div class="dlg"><p style="margin:0 0 8px">${esc(label)}</p>${multi?`<textarea id="dtx" rows="6" style="width:100%">${esc(val)}</textarea>`:`<input id="dtx" style="width:100%" value="${esc(val)}">`}<div class="row" style="justify-content:flex-end;gap:8px;margin-top:12px"><button id="dno">Abbrechen</button><button class="pri" id="dok">OK</button></div></div>`;
+  document.body.appendChild(d);const t=d.querySelector("#dtx");setTimeout(()=>t.focus(),50);const done=v=>{d.remove();res(v)};
+  d.querySelector("#dno").onclick=()=>done(null);d.querySelector("#dok").onclick=()=>done(t.value);if(!multi)t.onkeydown=e=>{if(e.key==="Enter")done(t.value)}})}
+/* ---------- Undo (Kampf) ---------- */
+const UNDO=[];let LASTC=null,NOUNDO=false;
+function trackCombat(){if(!S)return;const cur=JSON.stringify(S.combat);if(LASTC!==null&&cur!==LASTC&&!NOUNDO){UNDO.push(LASTC);if(UNDO.length>60)UNDO.shift()}LASTC=cur}
+function undoCombat(){if(!UNDO.length)return;NOUNDO=true;S.combat=JSON.parse(UNDO.pop());LASTC=JSON.stringify(S.combat);save();NOUNDO=false;rKampf();toast("Rückgängig gemacht")}
+
+function toast(t){document.querySelectorAll(".toast").forEach(x=>x.remove());const d=document.createElement("div");d.className="toast";d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),1700)}
 
 const MOD=s=>/^!! /m.test(s||"")?' <span class="modb">🛠️</span>':"";
 function md(src){
@@ -399,27 +419,36 @@ function rKampf(){
   const C=S.combat,L=C.list;
   $("#main").innerHTML=`
   <div class="card row" style="justify-content:space-between"><b>Runde ${C.round}</b>
-   <span class="row"><button class="sm" id="sort">Sortieren</button><button class="pri sm" id="next">Nächster ▶</button></span></div>
-  <div id="clist">${L.map((x,i)=>`<div class="cmb ${i===C.turn?"turn":""} ${x.hp!==null&&x.hp<=0?"dead":""}">
+   <span class="row"><button class="sm" id="undo" ${UNDO.length?"":"disabled"}>↩ Zurück${UNDO.length?` (${UNDO.length})`:""}</button><button class="sm" id="sort">Sortieren</button><button class="pri sm" id="next">Nächster ▶</button></span></div>
+  <div id="clist">${L.map((x,i)=>`<div class="swrap"><button class="swdel" data-del="${i}">Löschen</button><div class="cmb ${i===C.turn?"turn":""} ${x.hp!==null&&x.hp<=0?"dead":""}" data-row="${i}">
     <input class="ini" inputmode="numeric" pattern="[0-9]*" value="${esc(x.ini)}" data-ini="${i}" placeholder="Ini">
     <div class="who" data-who="${i}"><b>${esc(x.name)}</b>${x.cid?` <span class="mut" style="font-size:13px">📖 Werte</span>`:""}<div class="mut" style="font-size:13px">${x.ac?`RK ${x.ac}`:(x.pc?"Spielercharakter":"")}</div></div>
     <button class="hpb" data-hp="${i}">${x.hp===null?"TP ?":`${x.hp}<small>/${x.max}</small>`}${x.thp?`<div class="thp">+${x.thp} temp.</div>`:""}</button>
-  </div>`).join("")||'<p class="mut">Noch niemand im Kampf.</p>'}</div>
+  </div></div>`).join("")||'<p class="mut">Noch niemand im Kampf.</p>'}</div>
   <div class="card"><div class="row">
    <button class="sm" id="party">+ Gruppe (6 SC)</button><button class="sm" id="cust">+ Eigener Eintrag</button>
    <button class="sm" id="res">Kampf beenden</button></div>
-   <p class="mut" style="font-size:13px;margin-bottom:0">Name antippen = Werteblock. TP antippen = Ziffernblock für Schaden/Heilung. <b>Name lange gedrückt halten = aus dem Kampf entfernen.</b></p></div>`;
+   <p class="mut" style="font-size:13px;margin-bottom:0">Name antippen = Werteblock. TP antippen = Ziffernblock für Schaden/Heilung. <b>Eintrag nach links wischen → „Löschen“.</b> „↩ Zurück“ macht die letzten Änderungen rückgängig.</p></div>`;
   const q=s=>$("#main").querySelectorAll(s);
   q("[data-ini]").forEach(e=>e.onchange=()=>{L[+e.dataset.ini].ini=e.value;save()});
-  q("[data-who]").forEach(e=>{const i=+e.dataset.who,x=L[i];let lp=false;
-    longPress(e,()=>{lp=true;if(confirm(`${x.name} aus dem Kampf entfernen?`)){L.splice(i,1);if(C.turn>=L.length)C.turn=0;save();rKampf()}});
-    e.addEventListener("click",()=>{if(lp){lp=false;return}if(x.cid)openCreature(x.cid,"kampf")})});
+  q("[data-who]").forEach(e=>{const x=L[+e.dataset.who];e.addEventListener("click",()=>{if(e.closest(".cmb").dataset.swiped)return;if(x.cid)openCreature(x.cid,"kampf")})});
+  const closeAll=()=>q(".cmb").forEach(r=>{r.style.transform="";r.classList.remove("open");delete r.dataset.swiped});
+  q(".cmb").forEach(r=>{let sx=0,sy=0,dx=0,drag=false,lock=null;
+    r.addEventListener("touchstart",e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;dx=0;drag=true;lock=null;r.style.transition="none"},{passive:true});
+    r.addEventListener("touchmove",e=>{if(!drag)return;const t=e.touches[0];const mx=t.clientX-sx,my=t.clientY-sy;
+      if(lock===null&&(Math.abs(mx)>8||Math.abs(my)>8))lock=Math.abs(mx)>Math.abs(my)?"x":"y";
+      if(lock!=="x")return;e.preventDefault();const base=r.classList.contains("open")?-110:0;dx=Math.min(0,Math.max(-140,base+mx));r.style.transform=`translateX(${dx}px)`},{passive:false});
+    r.addEventListener("touchend",()=>{if(!drag)return;drag=false;r.style.transition="";if(lock!=="x")return;
+      if(dx<-55){closeAll();r.classList.add("open");r.style.transform="translateX(-110px)";r.dataset.swiped=1;setTimeout(()=>{},0)}else{r.classList.remove("open");r.style.transform="";setTimeout(()=>delete r.dataset.swiped,50)}});
+  });
+  q("[data-del]").forEach(b=>b.onclick=()=>{const i=+b.dataset.del,x=L[i];L.splice(i,1);if(C.turn>=L.length)C.turn=0;if(C.turn>i)C.turn--;save();rKampf();toast(`${x.name} entfernt – „↩ Zurück“ stellt wieder her`)});
+  $("#undo").onclick=undoCombat;
   q("[data-hp]").forEach(e=>e.onclick=()=>{const x=L[+e.dataset.hp];numpad(x,()=>{if(x.hp!==null&&x.hp<=0&&!x.pc)addLog(`${x.name} besiegt (Runde ${C.round})`);save();rKampf()})});
   $("#sort").onclick=()=>{L.sort((a,b)=>(+b.ini||0)-(+a.ini||0));C.turn=0;save();rKampf()};
   $("#next").onclick=()=>{if(!L.length)return;C.turn++;if(C.turn>=L.length){C.turn=0;C.round++}save();rKampf()};
   $("#party").onclick=()=>{D.party.forEach(p=>{if(!L.some(x=>x.name===p))addCombatant(null,p)});save();rKampf()};
-  $("#cust").onclick=()=>{const n=prompt("Name?");if(!n)return;addCombatant(null,n);L[L.length-1].pc=false;save();rKampf()};
-  $("#res").onclick=()=>{if(confirm("Kampf zurücksetzen?")){S.combat={list:[],turn:0,round:1};save();rKampf()}};
+  $("#cust").onclick=async()=>{const n=await askText("Name des Eintrags?");if(!n)return;addCombatant(null,n);L[L.length-1].pc=false;save();rKampf()};
+  $("#res").onclick=async()=>{if(await ask("Kampf beenden und Liste leeren? (Mit „↩ Zurück“ wiederherstellbar)","Kampf beenden",true)){S.combat={list:[],turn:0,round:1};save();rKampf()}};
 }
 
 /* ---------- Geheimnisse ---------- */
@@ -465,12 +494,12 @@ function rNotiz(){
    <p class="mut" style="font-size:13px">Der Spielstand liegt nur auf diesem Gerät. Exportieren kopiert ihn in die Zwischenablage.</p></div>`;
   $("#add").onclick=()=>{const v=$("#ev").value.trim();if(!v)return;addLog(v);save();rNotiz()};
   $("#ev").onkeydown=e=>{if(e.key==="Enter")$("#add").click()};
-  $("#main").querySelectorAll("[data-dl]").forEach(b=>b.onclick=()=>{const i=+b.dataset.dl;if(confirm("Eintrag löschen?\n"+S.log[i])){S.log.splice(i,1);save();rNotiz()}});
+  $("#main").querySelectorAll("[data-dl]").forEach(b=>b.onclick=()=>{const i=+b.dataset.dl;ask("Eintrag löschen?\n"+S.log[i],"Löschen",true).then(ok=>{if(ok){S.log.splice(i,1);save();rNotiz()}})});
   $("#main").querySelectorAll("[data-n]").forEach(e=>e.onchange=()=>{S.npc[e.dataset.n]=e.value;addLog(`${e.dataset.n}: ${e.value}`);save()});
   $("#loot").oninput=e=>{S.loot=e.target.value;save()};
   $("#notes").oninput=e=>{S.notes=e.target.value;save()};
   $("#exp").onclick=()=>clip(JSON.stringify(S),"Spielstand kopiert");
-  $("#imp").onclick=()=>{const v=prompt("Exportierten Spielstand einfügen:");if(!v)return;try{S=Object.assign(defState(),JSON.parse(v));save();toast("Importiert");render()}catch(e){alert("Ungültiger Spielstand")}};
+  $("#imp").onclick=async()=>{const v=await askText("Exportierten Spielstand einfügen:","",true);if(!v)return;try{S=Object.assign(defState(),JSON.parse(v));save();toast("Importiert");render()}catch(e){toast("Ungültiger Spielstand")}};
   $("#lo").onclick=()=>{lsDel(PKEY);location.reload()};
 }
 
@@ -550,7 +579,7 @@ function clip(t,msg){
   const ok=()=>toast(msg||"Kopiert");
   if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,()=>fallback(t,ok));else fallback(t,ok);
 }
-function fallback(t,ok){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){prompt("Kopieren:",t)}a.remove()}
+function fallback(t,ok){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){askText("Kopieren (markieren & kopieren):",t,true)}a.remove()}
 function copyContext(){clip(buildContext(""),"Kontext kopiert – in Claude einfügen")}
 function buildContext(q){
   const c=chap();const f=S.cur?findArea(S.cur):null;
