@@ -20,8 +20,11 @@ input,select,textarea{background:#fff;border:1px solid var(--line);border-radius
 header{position:sticky;top:0;z-index:20;background:var(--head);color:#fff;border-bottom:0;box-shadow:0 2px 8px #0003;padding:calc(env(safe-area-inset-top) + 8px) 12px 8px;display:flex;gap:8px;align-items:center}
 header h1{cursor:pointer;font-size:19px;font-weight:500;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
 header button{background:#ffffff1a;border-color:#ffffff40;color:#fff}
-main{padding:12px 12px calc(110px + env(safe-area-inset-bottom))}
-nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;background:var(--head);border-top:0;padding-bottom:max(env(safe-area-inset-bottom),24px)}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{display:flex;flex-direction:column;height:100vh;height:100dvh}
+header{flex:none}
+main{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding:12px 12px 24px}
+nav{position:relative;flex:none;z-index:30;display:flex;background:var(--head);border-top:0;padding-bottom:max(env(safe-area-inset-bottom),24px)}
 nav button{flex:1;border:0;border-radius:0;background:none;padding:9px 2px 7px;font-size:11px;color:#a9bcc7;display:flex;flex-direction:column;align-items:center;gap:2px}
 nav button .i{font-size:20px;line-height:1}
 nav button.on{color:#fff;font-weight:700;background:#ffffff14}
@@ -72,7 +75,7 @@ nav button.on{color:#fff;font-weight:700;background:#ffffff14}
 .st-erfahren{color:var(--grn);border-color:var(--grn)}.st-offenbart,.st-verraten{color:var(--blu);border-color:var(--blu)}.st-weg{color:var(--red);border-color:var(--red)}
 #lock{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg);z-index:99}
 #lock .card{width:100%;max-width:380px}
-.toast{position:fixed;left:50%;bottom:calc(110px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--acc);color:#fff;padding:10px 16px;border-radius:12px;z-index:200;font-weight:600}
+.toast{position:fixed;left:50%;bottom:calc(90px + max(env(safe-area-inset-bottom),24px));transform:translateX(-50%);background:var(--acc);color:#fff;padding:10px 16px;border-radius:12px;z-index:200;font-weight:600}
 .search{width:100%;margin-bottom:10px}
 
 .zoomv{position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#000;margin:8px 0}
@@ -126,9 +129,10 @@ button:disabled{opacity:.45}
 <h2 style="margin-top:0;color:var(--txt)">Vecna – SL-Begleiter</h2>
 <p class="mut">Inhalt ist verschlüsselt. Passwort eingeben:</p>
 <input id="pw" type="password" autocomplete="current-password" style="width:100%;margin-bottom:10px" placeholder="Passwort">
-<label class="row mut" style="margin-bottom:12px"><input id="rem" type="checkbox"> auf diesem Gerät merken</label>
+<label class="row mut" style="margin-bottom:12px"><input id="rem" type="checkbox" checked> auf diesem Gerät merken</label>
 <button class="pri" id="unlock" style="width:100%">Öffnen</button>
 <p id="err" style="color:var(--red)"></p>
+<p id="stinfo" class="mut" style="font-size:.8em;margin:0"></p>
 </div></div>
 
 <header><h1 id="ttl">Vecna</h1><button class="sm" id="ctx" title="Kontext für Claude kopieren">📋 Kontext</button></header>
@@ -136,7 +140,7 @@ button:disabled{opacity:.45}
 <nav id="nav"></nav>
 <div id="ov"></div>
 
-<script id="payload" type="application/json">{"salt": "NoWBLAN4L6RGaRMee4jpOg==", "iv": "TnEqnXOeEBHAR6lV", "iter": 250000, "ext": ["data1.bin", "data2.bin"], "v": "5b14d48531"}</script>
+<script id="payload" type="application/json">{"salt": "/hQi/OMfVjhU/utP3pE2fg==", "iv": "sE7h7+Q+Rm4rnUBP", "iter": 250000, "ext": ["data1.bin", "data2.bin"], "v": "8e0b5b5414"}</script>
 <script>
 "use strict";
 const $=s=>document.querySelector(s);
@@ -153,16 +157,30 @@ async function decrypt(pw){
   return JSON.parse(new TextDecoder().decode(pt));
 }
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function lsSet(k,v){try{localStorage.setItem(k,v);return localStorage.getItem(k)===v}catch(e){return false}}
 function lsDel(k){try{localStorage.removeItem(k)}catch(e){}}
-async function tryUnlock(pw,remember){
-  try{D=await decrypt(pw)}catch(e){if(e&&e.message==="nofile"){$("#err").textContent="Datendateien (data1.bin, data2.bin …) fehlen neben index.html.";return}$("#err").textContent="Falsches Passwort.";lsDel(PKEY);return}
-  if(remember)lsSet(PKEY,pw);
+function ckGet(k){try{const m=document.cookie.split("; ").find(x=>x.startsWith(k+"="));return m?decodeURIComponent(m.slice(k.length+1)):null}catch(e){return null}}
+function ckSet(k,v){try{document.cookie=k+"="+encodeURIComponent(v)+"; max-age=31536000; path=/; SameSite=Lax"+(location.protocol==="https:"?"; Secure":"")}catch(e){}}
+function ckDel(k){try{document.cookie=k+"=; max-age=0; path=/"}catch(e){}}
+function pwGet(){return lsGet(PKEY)||ckGet(PKEY)}
+function pwSet(pw){const ok=lsSet(PKEY,pw);ckSet(PKEY,pw);return ok||ckGet(PKEY)===pw}
+function pwDel(){lsDel(PKEY);ckDel(PKEY)}
+(()=>{let ok=false;try{const t="vecna-probe";localStorage.setItem(t,"1");ok=localStorage.getItem(t)==="1";localStorage.removeItem(t)}catch(e){}
+  if(!ok){const i=document.getElementById("stinfo");if(i)i.textContent="⚠️ Dieser Browser erlaubt hier keinen dauerhaften Speicher (privater Modus oder eingebettete Ansicht). Passwort, Notizen und Kampfstand gehen beim Schließen verloren."}
+  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}})();
+async function tryUnlock(pw,remember,auto){
+  $("#err").textContent=auto?"Lade …":"";
+  try{D=await decrypt(pw)}catch(e){
+    if(e&&e.message==="nofile"){$("#err").textContent="Datendateien (data1.bin, data2.bin …) fehlen neben index.html.";return}
+    if(!(e&&e.name==="OperationError")){$("#err").textContent="Laden fehlgeschlagen (Netz?). Gespeichertes Passwort bleibt erhalten – bitte nochmal „Öffnen“ tippen.";if(auto)$("#pw").value=pw;decrypt.buf=null;return}
+    $("#err").textContent="Falsches Passwort.";pwDel();return}
+  const _saved=remember?pwSet(pw):true;
   $("#lock").remove();init();try{LASTC=JSON.stringify(S.combat)}catch(e){}
+  if(!_saved)setTimeout(()=>{try{toast("⚠️ Passwort konnte hier nicht gespeichert werden (privater Modus?)")}catch(e){}},600);
 }
 $("#unlock").onclick=()=>tryUnlock($("#pw").value,$("#rem").checked);
 $("#pw").onkeydown=e=>{if(e.key==="Enter")$("#unlock").click()};
-(()=>{const p=lsGet(PKEY);if(p)tryUnlock(p,true)})();
+(()=>{const p=pwGet();if(p)tryUnlock(p,true,true)})();
 
 function defState(){return{tab:"karte",chapter:D.chapters[0].id,map:D.chapters[0].maps[0].id,zoom:1,done:{},cur:null,
   secrets:Object.assign({},D.secretsInit),npc:{},loot:"",notes:"",log:[],combat:{list:[],turn:0,round:1}}}
@@ -209,7 +227,7 @@ const TABS=[["karte","🗺️","Karte"],["kapitel","📖","Kapitel"],["monster",
 function init(){
   load();
   $("#nav").innerHTML=TABS.map(([k,i,l])=>`<button data-t="${k}"><span class="i">${i}</span>${l}</button>`).join("");
-  $("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;S.kScroll=S.kScroll||{};S.kScroll[S.tab+"|"+S.chapter]=scrollY;S.tab=b.dataset.t;save();render();const y=(S.kScroll||{})[S.tab+"|"+S.chapter]||0;scrollTo(0,y);requestAnimationFrame(()=>scrollTo(0,y))};
+  $("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;S.kScroll=S.kScroll||{};S.kScroll[S.tab+"|"+S.chapter]=$("#main").scrollTop;S.tab=b.dataset.t;save();render();const y=(S.kScroll||{})[S.tab+"|"+S.chapter]||0;$("#main").scrollTop=y;requestAnimationFrame(()=>{$("#main").scrollTop=y})};
   $("#ctx").onclick=copyContext;
   $("#ttl").onclick=()=>{sheet(`<h2>Inhaltsverzeichnis</h2>${D.chapters.map(c=>`<button class="${c.id===S.chapter?"pri":""}" data-ch="${c.id}" style="display:block;width:100%;margin:6px 0;text-align:left">${esc(c.title)}</button>`).join("")}`);
     document.querySelectorAll("#ov [data-ch]").forEach(b=>b.onclick=()=>{S.chapter=b.dataset.ch;S.map=chap().maps[0].id;save();closeOv();render()})};
@@ -275,7 +293,7 @@ function openArea(id){
   $("#cl").onclick=()=>{closeOv();if(S.tab==="karte")rKarte()};
   $("#dn").onclick=()=>{S.done[DK(id)]=!S.done[DK(id)];if(S.done[DK(id)])addLog(`${id} ${a.name} erledigt`);save();openArea(id)};
   $("#cx").onclick=copyContext;
-  $("#kib").onclick=()=>{closeOv();S.tab="ki";save();render();scrollTo(0,0)};
+  $("#kib").onclick=()=>{closeOv();S.tab="ki";save();render();$("#main").scrollTop=0};
   if($("#fi"))$("#fi").onclick=()=>{a.creatures.forEach(c=>addCombatant(c));save();toast("Zum Kampf hinzugefügt");};
   document.querySelectorAll("#ov [data-c]").forEach(e=>e.onclick=()=>openCreature(e.dataset.c,id));
   document.querySelectorAll("#ov [data-l]").forEach(e=>e.onclick=()=>{S.loot=(S.loot?S.loot+"\n":"")+e.dataset.l+` (${id})`;save();toast("In Beuteliste")});
@@ -500,7 +518,7 @@ function rNotiz(){
   $("#notes").oninput=e=>{S.notes=e.target.value;save()};
   $("#exp").onclick=()=>clip(JSON.stringify(S),"Spielstand kopiert");
   $("#imp").onclick=async()=>{const v=await askText("Exportierten Spielstand einfügen:","",true);if(!v)return;try{S=Object.assign(defState(),JSON.parse(v));save();toast("Importiert");render()}catch(e){toast("Ungültiger Spielstand")}};
-  $("#lo").onclick=()=>{lsDel(PKEY);location.reload()};
+  $("#lo").onclick=()=>{pwDel();location.reload()};
 }
 
 /* ---------- Claude ---------- */
