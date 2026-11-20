@@ -11,7 +11,7 @@
 <style>
 :root{--bg:#f2f0eb;--panel:#fbfaf7;--panel2:#e9e5dc;--line:#cdd5dd;--txt:#1e3745;--mut:#5f707b;--acc:#1e3745;--gold:#a8752a;--red:#b0402f;--grn:#3c8653;--blu:#2c679b;--head:#1e3745}
 *{touch-action:manipulation;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{touch-action:manipulation;margin:0;background:var(--bg);color:var(--txt);font:17px/1.45 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;background-image:radial-gradient(#0000000a 1px,transparent 1px);background-size:5px 5px}
+html,body{touch-action:manipulation;margin:0;overflow-x:hidden;max-width:100%;background:var(--bg);color:var(--txt);font:17px/1.45 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;background-image:radial-gradient(#0000000a 1px,transparent 1px);background-size:5px 5px}
 button,input,select,textarea{font:inherit;color:inherit}
 button{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer}
 button.pri{background:var(--acc);color:#fff;border-color:var(--acc);font-weight:600}
@@ -20,8 +20,8 @@ input,select,textarea{background:#fff;border:1px solid var(--line);border-radius
 header{position:sticky;top:0;z-index:20;background:var(--head);color:#fff;border-bottom:0;box-shadow:0 2px 8px #0003;padding:calc(env(safe-area-inset-top) + 8px) 12px 8px;display:flex;gap:8px;align-items:center}
 header h1{cursor:pointer;font-size:19px;font-weight:500;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
 header button{background:#ffffff1a;border-color:#ffffff40;color:#fff}
-main{padding:12px 12px calc(84px + env(safe-area-inset-bottom))}
-nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;background:var(--head);border-top:0;padding-bottom:env(safe-area-inset-bottom)}
+main{padding:12px 12px calc(110px + env(safe-area-inset-bottom))}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;background:var(--head);border-top:0;padding-bottom:max(env(safe-area-inset-bottom),18px)}
 nav button{flex:1;border:0;border-radius:0;background:none;padding:9px 2px 7px;font-size:11px;color:#a9bcc7;display:flex;flex-direction:column;align-items:center;gap:2px}
 nav button .i{font-size:20px;line-height:1}
 nav button.on{color:#fff;font-weight:700;background:#ffffff14}
@@ -36,13 +36,13 @@ nav button.on{color:#fff;font-weight:700;background:#ffffff14}
 .md td,.md th{border:1px solid var(--line);padding:4px}
 .mapsel{display:flex;gap:6px;margin-bottom:8px;overflow-x:auto}
 .mapsel button.on{border-color:var(--acc);color:var(--acc)}
-.mapwrap{position:relative;overflow:auto;border-radius:12px;border:1px solid var(--line);max-height:68vh;background:#000;touch-action:pan-x pan-y}
+.mapwrap{position:relative;overflow:auto;border-radius:12px;border:1px solid var(--line);max-height:68vh;max-height:60dvh;background:#000;touch-action:pan-x pan-y}
 .mapin{position:relative;transform-origin:0 0}
 .mapin img{display:block;width:100%;user-select:none;-webkit-user-select:none}
 .mk{position:absolute;transform:translate(-50%,-50%);min-width:26px;height:26px;padding:0 4px;border-radius:13px;background:rgba(232,190,100,.95);color:#1a1408;font-family:-apple-system,sans-serif;font-weight:700;font-size:11px;border:2px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px #000a}
 .mk.done{background:rgba(110,110,110,.85);color:#eee}
 .mk.cur{background:var(--red);color:#fff}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;max-height:86vh;overflow:auto;background:var(--bg);border-top:2px solid var(--acc);border-radius:18px 18px 0 0;padding:14px 14px calc(20px + env(safe-area-inset-bottom));box-shadow:0 -10px 30px #0004;animation:up .18s ease-out}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;max-height:86vh;max-height:82dvh;overflow:auto;background:var(--bg);border-top:2px solid var(--acc);border-radius:18px 18px 0 0;padding:14px 14px calc(40px + max(env(safe-area-inset-bottom),18px));box-shadow:0 -10px 30px #0004;animation:up .18s ease-out}
 @keyframes up{from{transform:translateY(40px);opacity:.4}}
 .sheet h2{margin:0 0 4px;font-size:19px}
 .shade{position:fixed;inset:0;background:#1e374580;z-index:45}
@@ -72,7 +72,7 @@ nav button.on{color:#fff;font-weight:700;background:#ffffff14}
 .st-erfahren{color:var(--grn);border-color:var(--grn)}.st-offenbart,.st-verraten{color:var(--blu);border-color:var(--blu)}.st-weg{color:var(--red);border-color:var(--red)}
 #lock{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg);z-index:99}
 #lock .card{width:100%;max-width:380px}
-.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--acc);color:#fff;padding:10px 16px;border-radius:12px;z-index:200;font-weight:600}
+.toast{position:fixed;left:50%;bottom:calc(110px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--acc);color:#fff;padding:10px 16px;border-radius:12px;z-index:200;font-weight:600}
 .search{width:100%;margin-bottom:10px}
 
 .zoomv{position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#000;margin:8px 0}
@@ -85,7 +85,7 @@ nav button.on{color:#fff;font-weight:700;background:#ffffff14}
 .move{background:#e3ecf3;border-left:4px solid var(--blu);padding:8px 12px;border-radius:8px;margin:8px 0}
 .pic{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center}.pic img{max-width:100%;max-height:100%;object-fit:contain}
 .pb{background:#e9e2f3;border-color:#8a74b0}
-.full{position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top) + 10px) 12px calc(30px + env(safe-area-inset-bottom))}
+.full{position:fixed;inset:0;height:100dvh;z-index:60;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch;padding:calc(env(safe-area-inset-top) + 10px) 12px calc(60px + max(env(safe-area-inset-bottom),18px))}
 .grp>summary{font-size:20px;color:var(--acc)}
 .sub{border-top:1px solid var(--line);padding-top:4px}
 .sub>summary{font-weight:600}
@@ -128,7 +128,7 @@ details summary{cursor:pointer;font-weight:600;padding:6px 0}
 <nav id="nav"></nav>
 <div id="ov"></div>
 
-<script id="payload" type="application/json">{"salt": "b6bl944w20wpo8zAYwWAXQ==", "iv": "XffAT0zbCnDRblJ9", "iter": 250000, "ext": "data.bin", "v": "24899ab076"}</script>
+<script id="payload" type="application/json">{"salt": "VyW5NKOIofE2q4vP0Eegkw==", "iv": "645EzW7LahtOWfi5", "iter": 250000, "ext": "data.bin", "v": "06148e8ecc"}</script>
 <script>
 "use strict";
 const $=s=>document.querySelector(s);
@@ -189,7 +189,7 @@ const TABS=[["karte","🗺️","Karte"],["kapitel","📖","Kapitel"],["monster",
 function init(){
   load();
   $("#nav").innerHTML=TABS.map(([k,i,l])=>`<button data-t="${k}"><span class="i">${i}</span>${l}</button>`).join("");
-  $("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;S.tab=b.dataset.t;save();render();scrollTo(0,0)};
+  $("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;S.kScroll=S.kScroll||{};S.kScroll[S.tab+"|"+S.chapter]=scrollY;S.tab=b.dataset.t;save();render();const y=(S.kScroll||{})[S.tab+"|"+S.chapter]||0;scrollTo(0,y);requestAnimationFrame(()=>scrollTo(0,y))};
   $("#ctx").onclick=copyContext;
   $("#ttl").onclick=()=>{sheet(`<h2>Inhaltsverzeichnis</h2>${D.chapters.map(c=>`<button class="${c.id===S.chapter?"pri":""}" data-ch="${c.id}" style="display:block;width:100%;margin:6px 0;text-align:left">${esc(c.title)}</button>`).join("")}`);
     document.querySelectorAll("#ov [data-ch]").forEach(b=>b.onclick=()=>{S.chapter=b.dataset.ch;S.map=chap().maps[0].id;save();closeOv();render()})};
@@ -266,13 +266,29 @@ function openArea(id){
 /* ---------- Kapitel ---------- */
 const RD=s=>(/^> /m.test(s||"")?" 🗣️":"")+MOD(s);
 const PG=p=>p?` <span class="pg">S. ${p}</span>`:"";
+
+let CRX=null;
+function crRegex(){if(CRX)return CRX;CRX=[];const norm=t=>t.toLowerCase().replace(/[„“"(),.·:]/g," ").replace(/\s+/g," ").trim();
+  for(const [id,c] of Object.entries(D.creatures)){const nm=norm(c.name.replace(/\s*\(.*\)\s*$/,"").replace(/\s*„.*$/,""));if(nm.length<4)continue;
+    const parts=nm.split(" ").map(w=>{let x=w;if(x.length>5)x=x.replace(/(er|en|e|n|s)$/,"");return x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+(w.length>3?"[a-zäöüß]{0,3}":"")});
+    CRX.push([id,new RegExp("(^|[^a-zäöüß])"+parts.join("\\s+")+"($|[^a-zäöüß])")])}
+  return CRX}
+function crMentions(text,extra){const norm=t=>t.toLowerCase().replace(/[„“"(),.·:]/g," ").replace(/\s+/g," ");
+  const spans=[];String(text||"").replace(/(^|[^*])\*\*([^*]+?)\*\*(?!\*)/g,(m,a,b)=>{spans.push(" "+norm(b)+" ")});
+  const ids=new Set(extra||[]);const big=spans.join(" | ");
+  for(const [id,re] of crRegex())if(re.test(big))ids.add(id);
+  return [...ids]}
+function crChips(ids){return ids.length?`<div class="row" style="gap:6px;margin:6px 0">${ids.map(k=>`<button class="sm" data-cr="${k}">🐉 ${esc((D.creatures[k]||{}).name||k)}</button>`).join("")}</div>`:""}
 function rKapitel(){
   const c=chap();
-  const areaSub=id=>{const f=findArea(id);const a=f.a;return`<details class="sub"><summary>${a.id}: ${esc(a.name)}${a.read?" 🗣️":""}${MOD(a.info)}${PG(a.page)}</summary><button class="sm" data-a="${a.id}" style="margin:6px 0">🗺️ Raum groß öffnen</button>${a.read?`<div class="read">${esc(a.read)}</div>`:""}<div class="md">${md(a.info)}</div></details>`};
-  const secSub=t=>{const s=c.sections.find(x=>x.title===t);return s?`<details class="sub"><summary>${esc(s.title)}${RD(s.md)}${PG(s.page)}</summary><div class="md">${md(s.md)}</div></details>`:""};
+  const areaSub=id=>{const f=findArea(id);const a=f.a;return`<details class="sub" data-k="a:${a.id}"><summary>${a.id}: ${esc(a.name)}${a.read?" 🗣️":""}${MOD(a.info)}${PG(a.page)}</summary><div class="row" style="gap:6px;margin:6px 0"><button class="sm" data-a="${a.id}">🗺️ Raum groß öffnen</button></div>${crChips(crMentions(a.info,[...new Set(a.creatures)]))}${a.read?`<div class="read">${esc(a.read)}</div>`:""}<div class="md">${md(a.info)}</div></details>`};
+  const secSub=t=>{const s=c.sections.find(x=>x.title===t);return s?`<details class="sub" data-k="s:${esc(s.title)}"><summary>${esc(s.title)}${RD(s.md)}${PG(s.page)}</summary>${crChips(crMentions(s.md))}<div class="md">${md(s.md)}</div></details>`:""};
   $("#main").innerHTML=`<input class="search" id="q" placeholder="Im Kapitel suchen …"><p class="mut" style="font-size:13px;margin:0 0 8px">🗣️ = enthält Text zum Vorlesen. Reihenfolge = Spielablauf.</p><div id="res"></div>`+
-   c.groups.map((g,i)=>`<details class="card grp" ${i===0?"open":""}><summary>${esc(g.title)}${g.items.some(it=>it.startsWith("@")?(findArea(it.slice(1))||{a:{}}).a.read:RD((c.sections.find(x=>x.title===it)||{}).md))?" 🗣️":""}${g.items.some(it=>it.startsWith("@")?MOD((findArea(it.slice(1))||{a:{}}).a.info):MOD((c.sections.find(x=>x.title===it)||{}).md))?' <span class="modb">🛠️</span>':""}</summary>${g.items.map(it=>it.startsWith("@")?areaSub(it.slice(1)):it.startsWith("#")?`<h3 style="color:var(--mut);font-size:14px;margin:12px 0 2px">${esc(it.slice(1))}</h3>`:secSub(it)).join("")}</details>`).join("");
+   c.groups.map((g,i)=>`<details class="card grp" data-k="g:${i}"><summary>${esc(g.title)}${g.items.some(it=>it.startsWith("@")?(findArea(it.slice(1))||{a:{}}).a.read:RD((c.sections.find(x=>x.title===it)||{}).md))?" 🗣️":""}${g.items.some(it=>it.startsWith("@")?MOD((findArea(it.slice(1))||{a:{}}).a.info):MOD((c.sections.find(x=>x.title===it)||{}).md))?' <span class="modb">🛠️</span>':""}</summary>${g.items.map(it=>it.startsWith("@")?areaSub(it.slice(1)):it.startsWith("#")?`<h3 style="color:var(--mut);font-size:14px;margin:12px 0 2px">${esc(it.slice(1))}</h3>`:secSub(it)).join("")}</details>`).join("");
   $("#main").querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>openArea(b.dataset.a));
+  $("#main").querySelectorAll("[data-cr]").forEach(b=>b.onclick=()=>openCreature(b.dataset.cr,"kapitel"));
+  S.kOpen=S.kOpen||{};const ko=S.kOpen[c.id]||(S.kOpen[c.id]={"g:0":1});
+  $("#main").querySelectorAll("details[data-k]").forEach(d=>{if(ko[d.dataset.k])d.open=true;d.addEventListener("toggle",()=>{if(d.open)ko[d.dataset.k]=1;else delete ko[d.dataset.k];save()})});
   $("#q").oninput=e=>{
     const q=e.target.value.trim().toLowerCase();if(q.length<2){$("#res").innerHTML="";return}
     const hits=[];
@@ -328,13 +344,13 @@ function sb(c){
 }
 function openCreature(id,back){
   const c=D.creatures[id];if(!c)return;
-  const bl=back==="kampf"?"‹ Zurück zum Kampf":back?`‹ ${back}`:"";
+  const bl=back==="kampf"?"‹ Zurück zum Kampf":back==="kapitel"?"‹ Zurück zum Kapitel":back?`‹ ${back}`:"";
   sheet(`<div class="row" style="justify-content:space-between"><span class="mut" style="font-size:14px">📖 ${esc(c.src)}</span><span class="row">${bl?`<button class="sm pri" id="bk">${bl}</button>`:""}<button class="sm" id="cl">✕</button></span></div>
    ${back==="kampf"?"":`<div class="row" style="margin-bottom:6px"><button class="sm" id="fi">⚔️ in Kampf</button></div>`}${picBtns(c.pics)}
    ${c.md?sb(c):`<div class="md"><p style="color:var(--red)">${D.missing}</p></div>`}
    ${back==="kampf"?`<button class="pri" id="bk2" style="width:100%;margin-top:12px">‹ Zurück zum Kampf</button>`:""}`);
   $("#cl").onclick=closeOv;
-  if(bl)$("#bk").onclick=()=>back==="kampf"?closeOv():openArea(back);
+  if(bl)$("#bk").onclick=()=>(back==="kampf"||back==="kapitel")?closeOv():openArea(back);
   if($("#bk2"))$("#bk2").onclick=closeOv;
   if($("#fi"))$("#fi").onclick=()=>{addCombatant(id);save();toast("Zum Kampf hinzugefügt")};bindPics();
 }
