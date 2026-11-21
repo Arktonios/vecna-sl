@@ -78,12 +78,20 @@ nav button.on{color:#fff;font-weight:700;background:#ffffff14}
 .toast{position:fixed;left:50%;bottom:calc(90px + max(env(safe-area-inset-bottom),24px));transform:translateX(-50%);background:var(--acc);color:#fff;padding:10px 16px;border-radius:12px;z-index:200;font-weight:600}
 .search{width:100%;margin-bottom:10px}
 
-.zoomv{position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#000;margin:8px 0}
+.zwrap{position:relative;overflow:auto;border-radius:12px;border:1px solid var(--line);background:#000;margin:8px 0 0;max-height:48vh;max-height:44dvh;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.zoomv{position:relative;overflow:hidden;background:#000}
 .zoomv img{position:absolute;max-width:none;user-select:none;-webkit-user-select:none}
 .fm{position:absolute;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;border:2px solid #fff;box-shadow:0 2px 6px #000c;color:#111}
 .fm.m{background:#e0524a;color:#fff}.fm.n{background:#5fc27e}.fm.f{background:#f0a23a}.fm.s{background:#f3d34a}.fm.t{background:#5fc3e0}.fm.i{background:#ddd}
+.lnk{color:var(--acc);font-weight:700;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:pointer;white-space:nowrap}
+.ftlnk{display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#5fc3e033;border:1px solid #5fc3e0;color:var(--txt);font-size:13px;font-weight:700;cursor:pointer}
+.mleg{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;font:11px/1.3 -apple-system,sans-serif;color:var(--mut);margin:5px 2px 0}
+.mleg i{display:inline-block;width:10px;height:10px;border-radius:5px;margin-right:4px;vertical-align:-1px;border:1px solid #fff;box-shadow:0 0 0 1px #0003}
+.grab{width:42px;height:5px;border-radius:3px;background:#0003;margin:-6px auto 8px}
 .leg{display:grid;grid-template-columns:30px 1fr;gap:6px 8px;align-items:start;margin:6px 0}
 .leg .fm{position:static;transform:none}
+.pm{position:absolute;transform:translate(-50%,-50%);height:26px;padding:0 9px;border-radius:13px;background:#5fc3e0;color:#0b2530;border:2px solid #fff;box-shadow:0 2px 6px #000c;font:800 12px/22px -apple-system,sans-serif;white-space:nowrap;cursor:pointer;z-index:2}
+.pchip{display:inline-block;margin:3px 6px 3px 0;padding:4px 12px;border-radius:14px;background:#5fc3e0;color:#0b2530;font-weight:800;font-size:14px;border:2px solid #fff;box-shadow:0 1px 4px #0005;cursor:pointer}
 .leg .on{background:#ece4d3;border-radius:8px}
 .move{background:#e3ecf3;border-left:4px solid var(--blu);padding:8px 12px;border-radius:8px;margin:8px 0}
 .pic{position:fixed;inset:0;z-index:300;background:#000;display:flex;align-items:center;justify-content:center}.pic img{max-width:100%;max-height:100%;object-fit:contain}
@@ -140,7 +148,7 @@ button:disabled{opacity:.45}
 <nav id="nav"></nav>
 <div id="ov"></div>
 
-<script id="payload" type="application/json">{"salt": "fOJ8Dr8sAgyEc/yCeeHGcw==", "iv": "54mtrJyCiHFoxeKx", "iter": 250000, "ext": ["data1.bin", "data2.bin"], "v": "47e7571c9c"}</script>
+<script id="payload" type="application/json">{"salt": "hrjgoMOnmJAgx/suEWoMsg==", "iv": "49ctH1zY6sptHZhj", "iter": 250000, "ext": ["data1.bin", "data2.bin"], "v": "8fccf0f976"}</script>
 <script>
 "use strict";
 const $=s=>document.querySelector(s);
@@ -204,7 +212,7 @@ function toast(t){document.querySelectorAll(".toast").forEach(x=>x.remove());con
 const MOD=s=>/^!! /m.test(s||"")?' <span class="modb">🛠️</span>':"";
 function md(src){
   const lines=String(src||"").split("\n");let h="",inUl=false,inTbl=false,tbl=[];
-  const il=s=>esc(s).replace(/\*\*\*(.+?)\*\*\*/g,"<b><i>$1</i></b>").replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\*(.+?)\*/g,"<i>$1</i>");
+  const il=s=>esc(s).replace(/Mordenkainen\*/g,"Mordenkainen&#42;").replace(/\*\*\*(.+?)\*\*\*/g,"<b><i>$1</i></b>").replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\*(.+?)\*/g,"<i>$1</i>");
   const flushT=()=>{if(!inTbl)return;h+="<table>"+tbl.filter(r=>!/^\|?\s*-/.test(r)).map((r,i)=>"<tr>"+r.replace(/^\||\|$/g,"").split("|").map(c=>`<${i?"td":"th"}>${il(c.trim())}</${i?"td":"th"}>`).join("")+"</tr>").join("")+"</table>";inTbl=false;tbl=[]};
   for(const ln of lines){
     const t=ln.trim();
@@ -249,14 +257,27 @@ function rKarte(){
   <div class="mapwrap" id="mw"><div class="mapin" id="mi" style="width:${S.zoom*100}%"><img src="${D.images[m.img]}" alt="">
   ${m.areas.map(a=>`<div class="mk ${S.done[DK(a.id)]?"done":""} ${S.cur===a.id?"cur":""} ${MOD(a.info)?"hasmod":""}" style="left:${a.x}%;top:${a.y}%" data-a="${a.id}">${a.id}</div>`).join("")}
   </div></div>
+  <div class="mleg"><span><i style="background:rgb(232,190,100)"></i>offen</span><span><i style="background:var(--red)"></i>zuletzt geöffnet</span><span><i style="background:#6e6e6e"></i>erledigt</span><span><i style="background:transparent;box-shadow:0 0 0 2px #c2185b"></i>eigene Anpassung</span></div>
   <div class="card list" style="margin-top:12px">${m.areas.map(a=>`<div class="it" data-a="${a.id}"><span><b>${a.id}</b> ${esc(a.name)}${a.read?" 🗣️":""}${MOD(a.info)}${PG(a.page)}</span><span>${S.done[DK(a.id)]?"✅":"›"}</span></div>`).join("")}</div>`;
   $("#main").querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{S.map=b.dataset.m;save();rKarte()});
   $("#main").querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>openArea(b.dataset.a));
   const z=d=>{S.zoom=Math.min(4,Math.max(1,+(S.zoom+d).toFixed(2)));save();$("#mi").style.width=S.zoom*100+"%";$("#zl").textContent=Math.round(S.zoom*100)+"%"};
   $("#zi").onclick=()=>z(.5);$("#zo").onclick=()=>z(-.5);
 }
-function closeOv(){$("#ov").innerHTML=""}
-function sheet(html){$("#ov").innerHTML=`<div class="shade" id="sh"></div><div class="sheet">${html}</div>`;$("#sh").onclick=closeOv}
+function closeOv(){$("#ov").innerHTML="";AREA_STACK.length=0}
+let AREA_STACK=[],AREA_RET=null;
+function chapIds(){const c=chap();const L=[];c.maps.forEach(m=>m.areas.forEach(a=>{if(/^[A-Z]{1,2}\d+$/.test(a.id))L.push(a.id)}));return L}
+function linkIds(html,self){const ids=chapIds().filter(i=>i!==self);if(!ids.length)return html;
+  const re=new RegExp("\\b("+ids.sort((a,b)=>b.length-a.length).join("|")+")\\b","g");
+  return html.split(/(<[^>]+>)/).map(p=>p.startsWith("<")?p:p.replace(re,'<span class="lnk" data-go="$1">$1</span>')).join("")}
+function bindGo(root,from){root.querySelectorAll("[data-go]").forEach(e=>e.onclick=ev=>{ev.stopPropagation();goArea(e.dataset.go,from)})}
+function goArea(id,from){const f=findArea(id);if(!f)return;if(from)AREA_STACK.push(from);if(S.tab==="karte"&&f.m&&chap().maps.includes(f.m))S.map=f.m.id;openArea(id,true)}
+function pullClose(el,onClose){if(!el)return;let y0=null,dy=0;
+  el.addEventListener("touchstart",e=>{if(e.touches.length!==1||el.scrollTop>2){y0=null;return}y0=e.touches[0].clientY;dy=0;el.style.transition="none"},{passive:true});
+  el.addEventListener("touchmove",e=>{if(y0===null)return;dy=e.touches[0].clientY-y0;if(dy<=0||el.scrollTop>2){if(dy<0)y0=null;el.style.transform="";return}e.preventDefault();el.style.transform=`translateY(${dy*0.9}px)`},{passive:false});
+  el.addEventListener("touchend",()=>{if(y0===null)return;y0=null;el.style.transition="transform .18s ease-out";
+    if(dy>110){el.style.transform="translateY(100%)";setTimeout(onClose,170)}else el.style.transform="";dy=0})}
+let SHEET_CLOSE=null;function sheet(html){SHEET_CLOSE=null;$("#ov").innerHTML=`<div class="shade" id="sh"></div><div class="sheet"><div class="grab"></div>${html}</div>`;$("#sh").onclick=closeOv;pullClose($("#ov .sheet"),()=>(SHEET_CLOSE||closeOv)())}
 function showPic(k){const d=document.createElement("div");d.className="pic";d.innerHTML=`<img src="${D.art[k]}">`;d.onclick=()=>d.remove();document.body.appendChild(d)}
 function picBtns(list){return list&&list.length?`<div class="row" style="margin:6px 0">${list.map(([l,k])=>`<button class="sm pb" data-pic="${k}">🖼️ ${esc(l)}</button>`).join("")}</div>`:""}
 function bindPics(){document.querySelectorAll("#ov [data-pic]").forEach(e=>e.onclick=()=>showPic(e.dataset.pic))}
@@ -264,19 +285,24 @@ const ICON={m:"Gegner",n:"NSC / Verbündete",f:"Falle / Gefahr",s:"Schatz",t:"T�
 function zoomHTML(a,m){
   const g=a.geo;if(!g)return"";const[x0,y0,x1,y1]=g.box,bw=x1-x0,bh=y1-y0,asp=D.aspect[m.img];
   const ratio=(bw)/(bh*asp);
-  return`<div class="zoomv" id="zv" style="aspect-ratio:${ratio}"><img src="${D.images[m.img]}" style="width:${10000/bw}%;left:${-x0*100/bw}%;top:${-y0*100/bh}%">
-   ${g.feat.map((f,i)=>`<div class="fm ${f.t}" data-f="${i}" style="left:${(f.x-x0)/bw*100}%;top:${(f.y-y0)/bh*100}%">${i+1}</div>`).join("")}</div>`;
+  const z=S.azoom||1;
+  return`<div class="row" style="margin:8px 0 0"><button class="sm" id="azo">−</button><span class="mut" id="azl">${Math.round(z*100)}%</span><button class="sm" id="azi">+</button><span class="mut" style="font-size:13px">Im Fenster scrollen.</span></div><div class="zwrap" id="zw"><div class="zoomv" id="zv" style="aspect-ratio:${ratio};width:${z*100}%"><img src="${D.images[m.img]}" style="width:${10000/bw}%;left:${-x0*100/bw}%;top:${-y0*100/bh}%">
+   ${g.feat.map((f,i)=>`<div class="fm ${f.t}" data-f="${i}" style="left:${(f.x-x0)/bw*100}%;top:${(f.y-y0)/bh*100}%">${i+1}</div>`).join("")}
+   ${(a.pass||[]).filter(p=>p.x!=null).map(p=>`<div class="pm" data-go="${p.to}" style="left:${(p.x-x0)/bw*100}%;top:${(p.y-y0)/bh*100}%">→ ${p.to}</div>`).join("")}</div></div>`;
 }
-function openArea(id){
-  const f=findArea(id);if(!f)return;const a=f.a;S.cur=id;save();
+function openArea(id,nav){
+  const f=findArea(id);if(!f)return;const a=f.a;S.cur=id;if(!nav)AREA_STACK.length=0;save();const back=AREA_STACK[AREA_STACK.length-1];
   const counts={};a.creatures.forEach(c=>counts[c]=(counts[c]||0)+1);
   const g=a.geo||{feat:[]};
-  $("#ov").innerHTML=`<div class="full">
+  $("#ov").innerHTML=`<div class="full"><div class="grab" style="margin-top:0"></div>
+  ${back?`<button class="sm pri" id="abk" style="margin-bottom:6px">‹ zurück zu ${esc(back)}</button>`:""}
   <div class="row" style="justify-content:space-between"><h2 style="margin:0;font-size:20px">${a.id}: ${esc(a.name)}</h2><button id="cl">✕</button></div>
   <p class="mut" style="margin:2px 0 0;font-size:13px">${esc(f.m.title)}${a.page?` · Buch S. ${a.page}`:""}</p>
   ${MOD(a.info)?`<div class="md">${md(a.info.split("\n").filter(l=>l.startsWith("!! ")).join("\n"))}</div>`:""}
   ${zoomHTML(a,f.m)}
-  ${g.feat.length?`<div class="leg">${g.feat.map((x,i)=>`<div class="fm ${x.t}">${i+1}</div><div data-l2="${i}"><b>${esc(x.l)}</b> <span class="mut" style="font-size:12px">${ICON[x.t]}</span>${x.n?`<div style="font-size:14px">${esc(x.n)}</div>`:""}</div>`).join("")}</div>`:""}
+  ${g.feat.length?`<div class="mleg" style="margin-bottom:6px">${[["m","#e0524a"],["n","#5fc27e"],["f","#f0a23a"],["s","#f3d34a"],["t","#5fc3e0"],["i","#ddd"]].map(([k,c])=>`<span><i style="background:${c}"></i>${ICON[k]}</span>`).join("")}<span><i style="background:#5fc3e0;width:18px"></i>→ Übergang (antippen)</span></div>`:""}
+  ${g.feat.length?`<div class="leg">${g.feat.map((x,i)=>{const tg=[...new Set(((x.l+" "+(x.n||"")).match(/\b[A-Z]{1,2}\d+\b/g)||[]))].filter(t=>t!==a.id&&chapIds().includes(t));return`<div class="fm ${x.t}">${i+1}</div><div data-l2="${i}"><b>${esc(x.l)}</b> <span class="mut" style="font-size:12px">${ICON[x.t]}</span>${tg.map(t=>`<span class="ftlnk" data-go="${t}">→ ${t}</span>`).join("")}${x.n?`<div style="font-size:14px">${linkIds(esc(x.n),a.id)}</div>`:""}</div>`}).join("")}</div>`:""}
+  ${(a.pass||[]).length?`<div style="margin:6px 0 2px"><span class="mut" style="font-size:13px">Übergänge: </span>${a.pass.map(p=>{const t=findArea(p.to);return`<span class="pchip" data-go="${p.to}">→ ${p.to}${t?` <span style="font-weight:500">${esc(t.a.name)}</span>`:""}</span>`}).join("")}</div>`:""}
   ${g.move?`<div class="move">🚶 <b>Bewegung:</b> ${esc(g.move)}</div>`:""}
   <div class="row" style="margin:10px 0 4px">
    <button class="sm ${S.done[DK(id)]?"pri":""}" id="dn">${S.done[DK(id)]?"✅ erledigt":"als erledigt markieren"}</button>
@@ -287,16 +313,20 @@ function openArea(id){
   ${a.creatures.length?`<div style="margin:6px 0">${Object.entries(counts).map(([c,n])=>{const cr=D.creatures[c];return`<span class="chip ${cr&&cr.md?"":"miss"}" data-c="${c}">🐉 ${n>1?n+"× ":""}${esc(cr?cr.name:c)}</span>`}).join("")}</div>`:""}
   ${(()=>{const L=[...(a.pics||[])];Object.keys(counts).forEach(c=>{const cr=D.creatures[c];if(cr&&cr.pics)cr.pics.forEach(p=>{if(!L.some(x=>x[1]===p[1]))L.push(p)})});return L.length?`<p class="mut" style="margin:8px 0 0;font-size:13px">Bilder für die Spieler (Tippen = Vollbild, nochmal tippen = schließen):</p>`+picBtns(L):""})()}
   ${a.read?`<div class="read">${esc(a.read)}</div>`:""}
-  <div class="md">${md(a.info.split("\n").filter(l=>!l.startsWith("!! ")).join("\n"))}</div>
+  <div class="md">${linkIds(md(a.info.split("\n").filter(l=>!l.startsWith("!! ")).join("\n")),a.id)}</div>
   ${a.loot.length?`<h3 style="color:var(--acc)">Schätze</h3><div>${a.loot.map(l=>`<span class="chip" data-l="${esc(l)}">💰 ${esc(l)}</span>`).join("")}</div><p class="mut" style="font-size:13px">Tippen = in die Beuteliste übernehmen.</p>`:""}
   </div>`;
   $("#ov .full").scrollTop=0;
-  $("#cl").onclick=()=>{closeOv();if(S.tab==="karte")rKarte()};
+  const _close=()=>{closeOv();if(S.tab==="karte")rKarte()};
+  $("#cl").onclick=_close;pullClose($("#ov .full"),_close);bindGo($("#ov .full"),id);
+  if($("#zi")||$("#azi")){const az=d=>{S.azoom=Math.min(4,Math.max(.5,+((S.azoom||1)+d).toFixed(2)));save();$("#zv").style.width=S.azoom*100+"%";$("#azl").textContent=Math.round(S.azoom*100)+"%"};if($("#azi")){$("#azi").onclick=()=>az(.5);$("#azo").onclick=()=>az(-.5)}}
+  if(AREA_RET&&AREA_RET.id===id){const r=AREA_RET;AREA_RET=null;requestAnimationFrame(()=>{$("#ov .full").scrollTop=r.top;if($("#zw")){$("#zw").scrollTop=r.zt;$("#zw").scrollLeft=r.zl}})}
+  if($("#abk"))$("#abk").onclick=()=>{const b=AREA_STACK.pop();openArea(b,true)};
   $("#dn").onclick=()=>{S.done[DK(id)]=!S.done[DK(id)];if(S.done[DK(id)])addLog(`${id} ${a.name} erledigt`);save();openArea(id)};
   $("#cx").onclick=copyContext;
   $("#kib").onclick=()=>{closeOv();S.tab="ki";save();render();$("#main").scrollTop=0};
   if($("#fi"))$("#fi").onclick=()=>{a.creatures.forEach(c=>addCombatant(c));save();toast("Zum Kampf hinzugefügt");};
-  document.querySelectorAll("#ov [data-c]").forEach(e=>e.onclick=()=>openCreature(e.dataset.c,id));
+  document.querySelectorAll("#ov [data-c]").forEach(e=>e.onclick=()=>{AREA_RET={id,top:$("#ov .full").scrollTop,zt:$("#zw")?$("#zw").scrollTop:0,zl:$("#zw")?$("#zw").scrollLeft:0};openCreature(e.dataset.c,"@"+id)});
   document.querySelectorAll("#ov [data-l]").forEach(e=>e.onclick=()=>{S.loot=(S.loot?S.loot+"\n":"")+e.dataset.l+` (${id})`;save();toast("In Beuteliste")});
   bindPics();
   document.querySelectorAll("#ov .fm[data-f]").forEach(e=>e.onclick=()=>{document.querySelectorAll("#ov [data-l2]").forEach(x=>x.classList.toggle("on",x.dataset.l2===e.dataset.f));const t=document.querySelector(`#ov [data-l2="${e.dataset.f}"]`);if(t)t.scrollIntoView({behavior:"smooth",block:"center"})});
@@ -383,12 +413,13 @@ function sb(c){
 }
 function openCreature(id,back){
   const c=D.creatures[id];if(!c)return;
-  const bl=back==="kampf"?"‹ Zurück zum Kampf":back==="kapitel"?"‹ Zurück zum Kapitel":back?`‹ ${back}`:"";
+  const toArea=back&&back[0]==="@"?back.slice(1):null;
+  const bl=toArea?"":back==="kampf"?"‹ Zurück zum Kampf":back==="kapitel"?"‹ Zurück zum Kapitel":back?`‹ ${back}`:"";
   sheet(`<div class="row" style="justify-content:space-between"><span class="mut" style="font-size:14px">📖 ${esc(c.src)}</span><span class="row">${bl?`<button class="sm pri" id="bk">${bl}</button>`:""}<button class="sm" id="cl">✕</button></span></div>
    ${back==="kampf"?"":`<div class="row" style="margin-bottom:6px"><button class="sm" id="fi">⚔️ in Kampf</button></div>`}${picBtns(c.pics)}
    ${c.md?sb(c):`<div class="md"><p style="color:var(--red)">${D.missing}</p></div>`}
    ${back==="kampf"?`<button class="pri" id="bk2" style="width:100%;margin-top:12px">‹ Zurück zum Kampf</button>`:""}`);
-  $("#cl").onclick=closeOv;
+  if(toArea){const ret=()=>openArea(toArea,true);$("#cl").onclick=ret;$("#sh").onclick=ret;SHEET_CLOSE=ret}else $("#cl").onclick=closeOv;
   if(bl)$("#bk").onclick=()=>(back==="kampf"||back==="kapitel")?closeOv():openArea(back);
   if($("#bk2"))$("#bk2").onclick=closeOv;
   if($("#fi"))$("#fi").onclick=()=>{addCombatant(id);save();toast("Zum Kampf hinzugefügt")};bindPics();
